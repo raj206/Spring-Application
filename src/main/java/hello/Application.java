@@ -2,6 +2,7 @@ package hello;
 
 import java.util.Arrays;
 
+import org.apache.commons.text.StringEscapeUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,6 +21,9 @@ public class Application {
         return args -> {
 
             System.out.println("Let's inspect the beans provided by Spring Boot:");
+            String myPara = "<p>This is my first para in Spring!</p>";
+
+            System.out.println(StringEscapeUtils.escapeHtml4(myPara));
 
             String[] beanNames = ctx.getBeanDefinitionNames();
             Arrays.sort(beanNames);

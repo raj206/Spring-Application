@@ -8,6 +8,8 @@ import org.jooq.SQLDialect;
 import static org.jooq.codegen.maven.example.Tables.*;
 import org.jooq.codegen.maven.example.tables.Springtest;
 import org.jooq.impl.DSL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,12 +23,14 @@ import java.util.Arrays;
 
 @SpringBootApplication
 public class Application {
+    public static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     public Application() throws SQLException {
     }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
+        logger.info("\u001B[34m" + "This is the logger speaking!" + "\u001B[0m");
     }
 
     @Bean

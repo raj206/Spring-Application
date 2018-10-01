@@ -15,6 +15,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+import rx.Observable;
+import rx.Subscriber;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -27,37 +29,13 @@ public class Application {
 
     public Application() throws SQLException {
     }
-
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
-        logger.info("\u001B[34m" + "This is the logger speaking!" + "\u001B[0m");
-    }
-
-    @Bean
-    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        return args -> {
-
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
-            String myPara = "\u001B[35m" +"<p>This is my first para in Spring!</p>" + "\u001B[0m";
-
-            System.out.println(StringEscapeUtils.escapeHtml4(myPara));
-
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }
-
-        };
-    }
-
-    String userName = "postgres";
-    String password = "";
-    String url = "jdbc:postgresql://localhost:5432/postgres";
+    static String userName = "postgres";
+    static String password = "";
+    static String url = "jdbc:postgresql://localhost:5432/postgres";
 
     // Connection is the only JDBC resource that we need
     // PreparedStatement and ResultSet are handled by jOOQ, internally
-    public int jooqRunner() {
+    public static int jooqRunner() {
         try (Connection conn = DriverManager.getConnection(url, userName, password)) {
             System.out.println("Jooq's working");
             DSLContext create = DSL.using(conn, SQLDialect.POSTGRES);
@@ -78,6 +56,33 @@ public class Application {
         }
         return 0;
     }
-    int a = jooqRunner();
+
+
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+        logger.info("\u001B[34m" + "This is the logger speaking!" + "\u001B[0m");
+        Observable<String> sampleObservable = Observable.just("Welcome to RxJava");
+        int a = (int) jooqRunner();
+    }
+
+    @Bean
+    public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+        return args -> {
+
+            System.out.println("Let's inspect the beans provided by Spring Boot:");
+            String myPara = "\u001B[35m" +"<p>This is my first para in Spring!</p>" + "\u001B[0m";
+
+            System.out.println(StringEscapeUtils.escapeHtml4(myPara));
+
+            String[] beanNames = ctx.getBeanDefinitionNames();
+            Arrays.sort(beanNames);
+            for (String beanName : beanNames) {
+                System.out.println(beanName);
+            }
+
+        };
+    }
+
 
 }
